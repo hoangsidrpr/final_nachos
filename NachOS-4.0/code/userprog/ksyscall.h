@@ -190,7 +190,7 @@ int SysOpen_File(char* fileName, int type) {
     return id;
 }
 
-int SysClose_File(int id) { return kernel->fileSystem->Close(id); }
+int SysClose_File(int id) { return kernel->fileSystem->CloseFile(id); }
 
 int SysRead_File(char* buffer, int charCount, int fileId) {
     if (fileId == 0) {

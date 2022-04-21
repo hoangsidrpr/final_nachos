@@ -136,6 +136,7 @@ int Seek_File(int position, OpenFileId id);
  */
 int Close_File(OpenFileId id);
 
+void Exit(int status);
 
 #endif /* IN_ASM */
 

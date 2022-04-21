@@ -46,19 +46,13 @@
 // implementation is available
 class FileSystem {
     public:
-	FileTable **fileTable;
+	FileTable *fileTable;
 	
 	FileSystem() {
-        fileTable = new FileTable *[MAX_PROCESS];
-        for (int i = 0; i < MAX_PROCESS; i++) {
-            fileTable[i] = new FileTable;
-        }
+            fileTable = new FileTable;
     }
 
     ~FileSystem() {
-        for (int i = 0; i < MAX_PROCESS; i++) {
-            delete fileTable[i];
-        }
         delete[] fileTable;
     }
 
@@ -78,32 +72,32 @@ class FileSystem {
 	  return new OpenFile(fileDescriptor);
       }
 
-    int FileTableIndex;
+    //int FileTableIndex;
 
     void Renew(int id) {
         for (int i = 0; i < FILE_MAX; i++) {
-            fileTable[id]->Remove(i);
+            fileTable->Remove(i);
         }
     }
 
     int Open(char *name, int openMode) {
-        return fileTable[FileTableIndex]->Insert(name, openMode);
+        return fileTable->Insert(name, openMode);
     }
 	bool isOpenFile(char* name){ 
-            return fileTable[FileTableIndex]->isOpen(name); 
+            return fileTable->isOpen(name); 
      }
-    int Close(int id) { return fileTable[FileTableIndex]->Remove(id); }
+    int CloseFile(int id) { return fileTable->Remove(id); }
 
     int Read(char *buffer, int charCount, int id) {
-        return fileTable[FileTableIndex]->Read(buffer, charCount, id);
+        return fileTable->Read(buffer, charCount, id);
     }
 
     int Write(char *buffer, int charCount, int id) {
-        return fileTable[FileTableIndex]->Write(buffer, charCount, id);
+        return fileTable->Write(buffer, charCount, id);
     }
 
     int Seek(int position, int id) {
-        return fileTable[FileTableIndex]->Seek(position, id);
+        return fileTable->Seek(position, id);
     }
 
     bool Remove(char *name) { return Unlink(name) == 0; }

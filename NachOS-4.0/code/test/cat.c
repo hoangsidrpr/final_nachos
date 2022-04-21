@@ -1,9 +1,8 @@
 /* cat program */
 #include "syscall.h"
-typedef int OpenFileID;
 int main()
 {
-	OpenFileID fileId;
+	int fileId;
 	int filesz,i;
 	char c;
 	char name[255];

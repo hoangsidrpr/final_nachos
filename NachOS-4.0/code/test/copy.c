@@ -1,11 +1,9 @@
 /* copy program */
 #include "syscall.h"
-#include "copyright.h"
-typedef int OpenFileID;
+
 int main()
 {
-	OpenFileID srcId;
-	OpenFileID dstId;
+	int srcId,dstId;
 	char source[255], dest[255];
 	int filesz,srcsz, i;
 	char c;
@@ -34,7 +32,8 @@ int main()
 		Write_File(&c, 1, dstId);
 		PrintChar(c);
 	}
-	Close_File(srcId);
-	Close_File(dstId);
+	
+	//Close_File(srcId);
+	//Close_File(dstId);
 	Halt();
     }

@@ -48,7 +48,7 @@ class FileTable {
         if (fileDescriptor == -1) return -1;
         openFile[freeIndex] = new OpenFile(fileDescriptor);
         fileOpenMode[freeIndex] = openMode;
-        FileName[freeIndex] = fileName;
+        FileName[freeIndex] =fileName;
         cout << "\nOpen file '" << fileName << "' at index " << freeIndex << ".\n";
         return freeIndex;
     }
