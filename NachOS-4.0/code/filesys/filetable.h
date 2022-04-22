@@ -24,6 +24,7 @@ class FileTable {
         fileOpenMode = new int[FILE_MAX];
         fileOpenMode[CONSOLE_IN] = MODE_READ;
         fileOpenMode[CONSOLE_OUT] = MODE_WRITE;
+         // Taclke I/O from console
     }
 
     int Insert(char* fileName, int openMode) {
@@ -41,14 +42,14 @@ class FileTable {
         }
 
         if (openMode == MODE_READWRITE)
-            fileDescriptor = OpenForReadWrite(fileName, FALSE);
+            fileDescriptor = OpenForReadWrite(fileName, FALSE); // MODE: Open file for Read and Write - fileDescriptor = 0 
         if (openMode == MODE_READ)
-            fileDescriptor = OpenForRead(fileName, FALSE);
+            fileDescriptor = OpenForRead(fileName, FALSE); // MODE: Open file for only Read -  fileDescriptor = 1
 
-        if (fileDescriptor == -1) return -1;
-        openFile[freeIndex] = new OpenFile(fileDescriptor);
-        fileOpenMode[freeIndex] = openMode;
-        FileName[freeIndex] =fileName;
+        if (fileDescriptor == -1) return -1; // File not exist
+        openFile[freeIndex] = new OpenFile(fileDescriptor); // After checking all condition -> Open new file with index=freeIndex
+        fileOpenMode[freeIndex] = openMode; // Save openMode -> fileOpenMode array with index=freeIndex
+        FileName[freeIndex] =fileName; // save fileName -> FileName array with index=freeIndex
         cout << "\nOpen file '" << fileName << "' at index " << freeIndex << ".\n";
         return freeIndex;
     }
@@ -93,10 +94,10 @@ class FileTable {
         return openFile[index]->Seek(pos);
     }
 
-    bool isOpen(char* name){
+    bool isOpen(char* name){ // check file open or not for remove 
         for (int i = 2; i < FILE_MAX; i++)
-            if (FileName[i] != NULL)
-                if (strcmp(name, FileName[i]) == 0){
+            if (FileName[i] != NULL) // Check if have file from FileName[i] is open
+                if (strcmp(name, FileName[i]) == 0){ // Check FileName[i] has been called 'name'
                     cout << "\nFile '" << name << "' is in use!\n";
                     return true;
                 }

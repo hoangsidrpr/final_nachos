@@ -2,10 +2,8 @@
 #include "syscall.h"
 
 int main() {
-    char fileName[256];
-    char mess[255];
-    int length;
-    int open; 
+    char fileName[256], mess[255];
+    int length,open;
     
     PrintString("Enter file's name's length: ");
     length = ReadNum();

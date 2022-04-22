@@ -72,7 +72,6 @@ class FileSystem {
 	  return new OpenFile(fileDescriptor);
       }
 
-    //int FileTableIndex;
 
     void Renew(int id) {
         for (int i = 0; i < FILE_MAX; i++) {

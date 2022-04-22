@@ -26,28 +26,6 @@
 #include "syscall.h"
 #include "ksyscall.h"
 #define MaxFileNameLength 32
-//----------------------------------------------------------------------
-// ExceptionHandler
-// 	Entry point into the Nachos kernel.  Called when a user program
-//	is executing, and either does a syscall, or generates an addressing
-//	or arithmetic exception.
-//
-// 	For system calls, the following is the calling convention:
-//
-// 	system call code -- r2
-//		arg1 -- r4
-//		arg2 -- r5
-//		arg3 -- r6
-//		arg4 -- r7
-//
-//	The result of the system call, if any, must be put back into r2.
-//
-// If you are handling a system call, don't forget to increment the pc
-// before returning. (Or else you'll loop making the same system call forever!)
-//
-//	"which" is the kind of exception.  The list of possible exceptions
-//	is in machine.h.
-//----------------------------------------------------------------------
 
 void move_pc()
 {
@@ -222,8 +200,11 @@ void call_SC_RandomNum()
 }
 //---CREATE_FILE---
 void call_SC_CreateFile() {
-    int virtAddr = kernel->machine->ReadRegister(4);
-    char* fileName = stringUser2Kernel(virtAddr);
+	// Input: Address from user memory of filename
+	// Output: -1 = Fail, 0 = Sucess
+	// Fuction: Create file with reference filename
+    int virtAddr = kernel->machine->ReadRegister(4); //Read address of filename from register R4
+    char* fileName = stringUser2Kernel(virtAddr); // Copy capacity memory from USER Space to System Space
 
     if (SysCreateFile(fileName))
         kernel->machine->WriteRegister(2, 0);
@@ -235,17 +216,17 @@ void call_SC_CreateFile() {
 }
 void call_SC_Remove_File()
 {
-	int virtAddr = kernel->machine->ReadRegister(4); // Lay dia chi cua tham so name tu thanh ghi so 4
-    char* fileName = stringUser2Kernel(virtAddr); // Copy chuoi tu vung nho User Space sang System Space
+	int virtAddr = kernel->machine->ReadRegister(4); //Read address of filename from register R4
+    char* fileName = stringUser2Kernel(virtAddr); // Copy capacity memory from USER Space to System Space
 	
 	kernel->machine->WriteRegister(2, SysRemove_File(fileName));
 
 	return move_pc();
 }
 void call_SC_Open_File() {
-    int virtAddr = kernel->machine->ReadRegister(4);
-    char* fileName = stringUser2Kernel(virtAddr);
-    int type = kernel->machine->ReadRegister(5);
+    int virtAddr = kernel->machine->ReadRegister(4); //Read address of filename from register R4
+    char* fileName = stringUser2Kernel(virtAddr); // Copy capacity memory from USER Space to System Space
+    int type = kernel->machine->ReadRegister(5); // take reference 'type' from register R5 
 
     kernel->machine->WriteRegister(2, SysOpen_File(fileName, type));
 
@@ -254,6 +235,8 @@ void call_SC_Open_File() {
 }
 
 void call_SC_Close_File() {
+	//Input id of file(OpenFileID)
+	//Output: 0: sucess, -1 Fail
     int id = kernel->machine->ReadRegister(4);
     kernel->machine->WriteRegister(2, SysClose_File(id));
 
@@ -299,6 +282,33 @@ void call_SC_Seek_File() {
 
     return move_pc();
 }
+
+
+//----------------------------------------------------------------------
+// ExceptionHandler
+// 	Entry point into the Nachos kernel.  Called when a user program
+//	is executing, and either does a syscall, or generates an addressing
+//	or arithmetic exception.
+//
+// 	For system calls, the following is the calling convention:
+//
+// 	system call code -- r2
+//		arg1 -- r4
+//		arg2 -- r5
+//		arg3 -- r6
+//		arg4 -- r7
+//
+//	The result of the system call, if any, must be put back into r2.
+//
+// If you are handling a system call, don't forget to increment the pc
+// before returning. (Or else you'll loop making the same system call forever!)
+//
+//	"which" is the kind of exception.  The list of possible exceptions
+//	is in machine.h.
+//----------------------------------------------------------------------
+
+
+
 void ExceptionHandler(ExceptionType which)
 {
 	int type = kernel->machine->ReadRegister(2);

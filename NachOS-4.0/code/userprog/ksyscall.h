@@ -157,57 +157,66 @@ void SysPrintNum(int num)
 	}
 }
 bool SysCreateFile(char* fileName) {
-    bool success;
     int fileNameLength = strlen(fileName);
 
-    if (fileNameLength == 0) {
-        DEBUG(dbgSys, "\nFile name can't be empty");
-        success = false;
+    if (fileNameLength == 0) // CASE: File Empty
+	{
+        DEBUG(dbgSys, "\nFile name is not valid!");
+		return false;
 
-    } else if (fileName == NULL ) {
+    } else if (fileName == NULL ) //CASE: Cannot read file
+	{
         DEBUG(dbgSys, "\nNot enough memory in system");
-        success = false;
+        return false;
 
     } else {
         DEBUG(dbgSys, "\nFile's name read successfully");
-        if (!kernel->fileSystem->Create(fileName)) {
-            DEBUG(dbgSys, "\nError creating file");
-            success = false;
+        if (!kernel->fileSystem->Create(fileName)) // Create file from "Create" function of fileSystem and return result 
+		{
+            DEBUG(dbgSys, "\nError creating file");  
+			cout << "\nCan not create file '" << fileName << "'\n";
+            return false; // Create file failed
         } else {
-            success = true;
+			cout << "\nCreated file '" << fileName << "'.\n";
+			return true; // Create file successfully
         }
     }
-
-    return success;
 }
 
 int SysOpen_File(char* fileName, int type) {
-    if (type != 0 && type != 1) return -1;
-
+    if (type != 0 && type != 1) // Check type if invalid
+	{
+		cerr << "\nInvalid file type!\n";
+		return -1;
+	}
     int id = kernel->fileSystem->Open(fileName, type);
-    if (id == -1) return -1;
-    DEBUG(dbgSys, "\nOpened file");
-    return id;
+    if (id != -1) // open file successfull
+	{
+		DEBUG(dbgSys, "\nOpened file");
+		return 0;
+	}
+	else
+    return -1; // open file failed
 }
 
 int SysClose_File(int id) { return kernel->fileSystem->CloseFile(id); }
 
 int SysRead_File(char* buffer, int charCount, int fileId) {
-    if (fileId == 0) {
+    if (fileId == 0) { // read from console
         return kernel->synchConsoleIn->GetString(buffer, charCount);
     }
     return kernel->fileSystem->Read(buffer, charCount, fileId);
 }
 
 int SysWrite_File(char* buffer, int charCount, int fileId) {
-    if (fileId == 1) {
+    if (fileId == 1) { // Print into console
         return kernel->synchConsoleOut->PutString(buffer, charCount);
     }
     return kernel->fileSystem->Write(buffer, charCount, fileId);
 }
 
 int SysSeek_File(int seekPos, int fileId) {
-    if (fileId <= 1) {
+    if (fileId <= 1) { // if file not found 
         DEBUG(dbgSys, "\nCan't seek in console");
         return -1;
     }
@@ -225,7 +234,7 @@ int SysRemove_File(char* filename) {
 			cout << "\nDeleted file '" << filename << "'.\n";
 			return 0;
 		}
-		else{	
+		else{	// File is not exist
 			cout << "\nFile '" << filename << "' not exists.\n";
 			return -1;
 		}

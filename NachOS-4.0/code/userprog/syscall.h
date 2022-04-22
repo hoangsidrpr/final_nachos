@@ -88,6 +88,16 @@ void ReadString(char *buffer, int length);
 // 9.
 void PrintString(char *buffer);
 
+/* File system operations: Create, Remove, Open, Read, Write, Close
+ * These functions are patterned after UNIX -- files represent
+ * both files *and* hardware I/O devices.
+ *
+ * Note that the Nachos file system has a stub implementation, which
+ * can be used to support these system calls if the regular Nachos
+ * file system has not been implemented.
+ */
+
+/* A unique identifier for an open Nachos file. */
 typedef int OpenFileId;
 
 /* when an address space starts up, it has two open files, representing
