@@ -19,7 +19,7 @@ int main()
 	PrintString("\n");
 	
 	
-	srcId = Open_File(source, 1); // open for only read
+	 srcId = Open_File(source, 1); // open for only read
 	CreateFile(dest);
 	dstId = Open_File(dest, 0); // open for read and write
 	if (srcId == -1 || dstId == -1)

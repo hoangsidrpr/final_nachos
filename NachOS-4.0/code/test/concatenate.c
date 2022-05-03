@@ -35,7 +35,8 @@ int main()
 		Read_File(&c, 1, srcId);
 		Write_File(&c, 1, dstId);
 	}
-	//Close_File(srcId);
-	//Close_File(dstId);
+	
+	Close_File(srcId);
+	Close_File(dstId);
 	Halt();
     }

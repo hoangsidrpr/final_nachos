@@ -6,7 +6,7 @@ int main()
 	char c, name[255];
 	PrintString("Input file name:");
 	ReadString(name, 255);
-	if ( (fileId= Open_File(name, 1)) == -1) // Check file if it is not exist
+	 if ( (fileId= Open_File(name, 1)) == -1) // Check file if it is not exist
 	{
 		PrintString("Can not open file ");
 		return 0;
@@ -18,7 +18,8 @@ int main()
 	{
 		Read_File(&c, 1, fileId); // Read file from filename
 		PrintChar(c); //Show the result
-	} 
+	}
+	Remove_File(name);
 	Close_File(fileId);
 	Halt();
 }

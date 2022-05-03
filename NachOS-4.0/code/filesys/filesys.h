@@ -49,7 +49,7 @@ class FileSystem {
 	FileTable *fileTable;
 	
 	FileSystem() {
-            fileTable = new FileTable;
+            fileTable = new FileTable[MAX_PROCESS];
     }
 
     ~FileSystem() {

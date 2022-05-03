@@ -193,7 +193,7 @@ int SysOpen_File(char* fileName, int type) {
     if (id != -1) // open file successfull
 	{
 		DEBUG(dbgSys, "\nOpened file");
-		return 0;
+		return id;
 	}
 	else
     return -1; // open file failed
